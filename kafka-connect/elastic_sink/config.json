@@ -1,0 +1,16 @@
+{
+  "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+  "connection.url": "http://elastic:9200",
+  "connection.username": "elastic",
+  "connection.password": "quangpn",
+  "tasks.max": "1",
+  "topics": "JDBC.test-kafka-connect.todo",
+  "key.ignore": "false",
+  "schema.ignore": "true",
+  "type.name": "_doc",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "key.converter.schemas.enable": "false",
+  "value.converter.schemas.enable": "false",
+  "behavior.on.null.values": "delete"
+}
