@@ -6,7 +6,7 @@
     "connection.username": "elastic",
     "connection.password": "quangpn",
     "tasks.max": "1",
-    "topics": "JDBC.test-kafka-connect.todo",
+    "topics": "JDBC.test-kafka-connect.todo, debezium.cdc.users",
     "key.ignore": "false",
     "schema.ignore": "true",
     "type.name": "_doc",
@@ -14,6 +14,11 @@
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
     "value.converter.schemas.enable": "false",
-    "behavior.on.null.values": "delete"
+    "behavior.on.null.values": "delete",
+
+    "transforms": "rerouteIndex",
+    "transforms.rerouteIndex.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.rerouteIndex.regex": ".*",
+    "transforms.rerouteIndex.replacement": "$0"
   }
 }

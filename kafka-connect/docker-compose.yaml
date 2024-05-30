@@ -33,6 +33,19 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
       CONFLUENT_METRICS_ENABLE: 'false'
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      - kafka
+    ports:
+      - 8080:8080
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    networks:
+      - kafka-net
   schema-registry:
     image: "confluentinc/cp-schema-registry:7.6.1"
     container_name: schema-registry
@@ -81,6 +94,7 @@ services:
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
       CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_TOPIC_CREATION_ENABLE: "true"
       CONNECT_PLUGIN_PATH: /usr/share/java, /usr/share/confluent-hub-components
     volumes:
       - ./plugins:/usr/share/confluent-hub-components
@@ -103,13 +117,17 @@ services:
       MYSQL_DATABASE: test-kafka-connect
     ports:
       - "3333:3306"
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --binlog-format=ROW
+      --log-bin=mysql-bin
+      --binlog_row_image=full
+      --server-id=184054
     networks:
       kafka-net:
-    volumes:
-      - test-kafka-connect-db:/var/lib/mysql
   elastic:
-    image: docker.elasticsearch.co/elasticsearch/elasticsearch:8.12.2
-    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    container_name: elastic
     volumes:
       - elasticdata:/usr/share/elasticsearch/data
     ports:
@@ -130,7 +148,7 @@ services:
   kibana:
     depends_on:
       - elastic
-    image: docker.elasticsearch.co/kibana/kibana:8.12.2
+    image: docker.elastic.co/kibana/kibana:8.12.2
     container_name: connect-kibana
     volumes:
       - kibanadata:/usr/share/kibana/data
@@ -139,13 +157,12 @@ services:
     networks:
       - kafka-net
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://elastic:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=kibanapass
 networks:
   kafka-net:
     driver: bridge
 volumes:
-  test-kafka-connect-db:
   elasticdata:
   kibanadata:

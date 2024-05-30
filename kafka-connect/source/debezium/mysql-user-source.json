@@ -1,0 +1,28 @@
+{
+  "name": "debezium-user-source-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "tasks.max": "1",
+    "topic.prefix": "cdc",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "root",
+    "database.password":"123456",
+    "database.server.id": "184054",
+    "database.include.list": "test-kafka-connect",
+    "table.include.list": "test-kafka-connect.users",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.topic": "schemahistory.debezium_connector",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter.schemas.enable": "false",
+
+    "transforms": "Reroute",
+    "transforms.Reroute.type": "io.debezium.transforms.ByLogicalTableRouter",
+    "transforms.Reroute.topic.regex":"cdc.test-kafka-connect.users",
+    "transforms.Reroute.topic.replacement": "debezium.cdc.users",
+    "transforms.Reroute.key.field.name": "id",
+    "transforms.Reroute.key.enforce.uniqueness": "false"
+  }
+}
