@@ -3,7 +3,7 @@
 This repository provides a step-by-step guide to set up Kafka Connect. Kafka Connect is a framework to stream data between Apache Kafka and other systems in a reliable and scalable way.
 
 ## Architecture
-
+![](./assets/architecture.png)
 ## Installation
 
 ---
