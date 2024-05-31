@@ -38,10 +38,19 @@ curl -X POST -H "Content-Type: application/json" --data @source/debezium/mysql-u
 2. **Sink connector**
 
  Use [Elasticsearch sink connector](https://docs.confluent.io/kafka-connectors/elasticsearch/current/overview.html)
+
+For JDBC source connector
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-todo-sink.json http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-todo-sink-for-jdbc.json http://localhost:8083/connectors
+```
+For Debezium source connector
+```bash
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-user-sink-for-debezium.json http://localhost:8083/connectors
 ```
 ### Step 5: Setup Elasticsearch index
+```bash
+curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/JDBC.test-kafka-connect.todo?include_type_name=true -d @indexes/todo-index.json
+```
 ```bash
 curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/debezium.cdc.users?include_type_name=true -d @indexes/user-index.json
 ```
