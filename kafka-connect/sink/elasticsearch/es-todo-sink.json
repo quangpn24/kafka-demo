@@ -13,12 +13,6 @@
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
-    "value.converter.schemas.enable": "false",
-    "behavior.on.null.values": "delete",
-
-    "transforms": "rerouteIndex",
-    "transforms.rerouteIndex.type": "org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.rerouteIndex.regex": ".*",
-    "transforms.rerouteIndex.replacement": "$0"
+    "value.converter.schemas.enable": "false"
   }
 }

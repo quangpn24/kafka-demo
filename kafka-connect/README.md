@@ -41,8 +41,11 @@ curl -X POST -H "Content-Type: application/json" --data @source/debezium/mysql-u
 ```bash
 curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-todo-sink.json http://localhost:8083/connectors
 ```
-
-### Step 5: Setup password for account`kibana_system`
+### Step 5: Setup Elasticsearch index
+```bash
+curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/debezium.cdc.users?include_type_name=true -d @indexes/user-index.json
+```
+### Step 6: Setup password for account `kibana_system`
 ```bash
 docker compose exec elastic sh
 ```
