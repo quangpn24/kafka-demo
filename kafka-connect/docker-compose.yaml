@@ -134,7 +134,7 @@ services:
       - kafka-net
     environment:
       ES_JAVA_OPTS: -Xmx256m -Xms256m
-      ELASTIC_PASSWORD: quangpn
+      ELASTIC_PASSWORD: elasticpass
       KIBANA_PASSWORD: kibanapass
       discovery.type: single-node
       xpack.security.http.ssl.enabled: false

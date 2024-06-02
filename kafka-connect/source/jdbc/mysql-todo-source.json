@@ -13,7 +13,7 @@
     "table.whitelist": "todo",
     "table.types": "TABLE",
     "timestamp.initial": "-1",
-    "topic.prefix": "JDBC.test-kafka-connect.",
+    "topic.prefix": "jdbc.test-kafka-connect.",
     "db.timezone": "UTC",
     "validate.non.null": "false",
     "batch.max.rows": "3000",
