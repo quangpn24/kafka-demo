@@ -35,7 +35,7 @@
       "age": {
         "type": "integer"
       },
-      "gender": {
+      "email": {
         "type": "text"
       },
       "created_at": {

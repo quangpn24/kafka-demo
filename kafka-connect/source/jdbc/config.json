@@ -8,7 +8,7 @@
   "mode": "timestamp+incrementing",
   "timestamp.column.name": "updated_at",
   "incrementing.column.name": "id",
-  "table.whitelist": "todo",
+  "table.whitelist": "tasks",
   "table.types": "TABLE",
   "timestamp.initial": "-1",
   "topic.prefix": "JDBC.test-kafka-connect.",

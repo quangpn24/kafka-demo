@@ -1,6 +1,6 @@
-CREATE TABLE todo (
+CREATE TABLE tasks (
   id int AUTO_INCREMENT PRIMARY KEY,
-  task varchar(256),
+  title varchar(256),
   status varchar(256),
   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp DEFAULT CURRENT_TIMESTAMP

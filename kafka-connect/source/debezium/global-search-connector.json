@@ -1,0 +1,62 @@
+{
+  "name": "global-search-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "tasks.max": "1",
+    "topic.prefix": "cdc",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "root",
+    "database.password":"123456",
+    "database.server.id": "184054",
+    "database.include.list": "test-kafka-connect",
+    "table.include.list": "test-kafka-connect.users, test-kafka-connect.task, test-kafka-connect.tags",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.topic": "schemahistory.debezium_connector",
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "true",
+    "value.converter.schemas.enable": "true",
+
+    "transforms": "Reroute, filterUsers, filterTask, filterTags, extractUser, extractTask, extractTag",
+    "transforms.Reroute.type": "io.debezium.transforms.ByLogicalTableRouter",
+    "transforms.Reroute.topic.regex":"cdc.test-kafka-connect.(.*)",
+    "transforms.Reroute.topic.replacement": "cdc.search.global",
+    "transforms.Reroute.key.field.name": "id",
+    "transforms.Reroute.key.enforce.uniqueness": "true",
+
+    "transforms.filterUsers.type": "org.apache.kafka.connect.transforms.Filter",
+    "transforms.filterUsers.predicate": "IsUser",
+
+    "transforms.filterTask.type": "org.apache.kafka.connect.transforms.Filter",
+    "transforms.filterTask.predicate": "IsTask",
+
+    "transforms.filterTags.type": "org.apache.kafka.connect.transforms.Filter",
+    "transforms.filterTags.predicate": "IsTag",
+
+    "predicates": "IsUser, IsTask, IsTag",
+
+    "predicates.IsUser.type": "org.apache.kafka.connect.transforms.predicates.TopicNameMatches",
+    "predicates.IsUser.pattern": "cdc.test-kafka-connect.users",
+
+    "predicates.IsTask.type": "org.apache.kafka.connect.transforms.predicates.TopicNameMatches",
+    "predicates.IsTask.pattern": "cdc.test-kafka-connect.task",
+
+    "predicates.IsTag.type": "org.apache.kafka.connect.transforms.predicates.TopicNameMatches",
+    "predicates.IsTag.pattern": "cdc.test-kafka-connect.tags",
+
+    "transforms.extractUser.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+    "transforms.extractUser.field": "username, email",
+    "transforms.extractUser.predicate": "IsUser",
+
+    "transforms.extractTask.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+    "transforms.extractTask.field": "title",
+    "transforms.extractTask.predicate": "IsTask",
+
+    "transforms.extractTag.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+    "transforms.extractTag.field": "tag_name",
+    "transforms.extractTag.predicate": "IsTag"
+  }
+}

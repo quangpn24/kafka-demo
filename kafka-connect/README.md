@@ -35,7 +35,7 @@ curl -X POST -H "Content-Type: application/json" --data @source/debezium/mysql-u
 
 OR [JDBC source connector](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/overview.html)
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @source/jdbc/mysql-todo-source.json http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @source/jdbc/mysql-task-source.json http://localhost:8083/connectors
 ```
 2. **Sink connector**
 
@@ -48,7 +48,7 @@ curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-u
 
 For JDBC source connector
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-todo-sink-for-jdbc.json http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-task-sink-for-jdbc.json http://localhost:8083/connectors
 ```
 
 ### Step 4: Initialize Elasticsearch index
@@ -58,7 +58,7 @@ curl -i -X PUT -u "elastic:elasticpass" -H "Accept:application/json" -H  "Conten
 ```
 With JDBC source connector
 ```bash
-curl -i -X PUT -u "elastic:elasticpass" -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/jdbc.test-kafka-connect.todo -d @indexes/todo-index.json
+curl -i -X PUT -u "elastic:elasticpass" -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/jdbc.test-kafka-connect.tasks -d @indexes/task-index.json
 ```
 
 ### Step 5: Setup password for account `kibana_system`
@@ -81,6 +81,7 @@ CREATE TABLE users (
    id int AUTO_INCREMENT PRIMARY KEY,
    username varchar(256),
    age integer,
+   email varchar(256),
    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
    updated_at timestamp DEFAULT CURRENT_TIMESTAMP
 ); 
@@ -88,7 +89,7 @@ CREATE TABLE users (
 and 
 ```sql
 //use for JDBC source connector
-CREATE TABLE todo (
+CREATE TABLE tasks (
   id int AUTO_INCREMENT PRIMARY KEY,
   title varchar(256),
   status varchar(256),
