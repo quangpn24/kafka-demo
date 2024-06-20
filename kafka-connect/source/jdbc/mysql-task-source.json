@@ -1,5 +1,5 @@
 {
-  "name": "mysql-todo-source-connector",
+  "name": "mysql-task-source-connector",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "connection.url": "jdbc:mysql://mysql:3306/test-kafka-connect",
@@ -10,7 +10,7 @@
     "mode": "timestamp+incrementing",
     "timestamp.column.name": "updated_at",
     "incrementing.column.name": "id",
-    "table.whitelist": "todo",
+    "table.whitelist": "tasks",
     "table.types": "TABLE",
     "timestamp.initial": "-1",
     "topic.prefix": "jdbc.test-kafka-connect.",

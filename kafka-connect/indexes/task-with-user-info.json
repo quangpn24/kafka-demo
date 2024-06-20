@@ -27,6 +27,19 @@
       "id": {
         "type": "text"
       },
+      "title": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "standard"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "standard"
+      },
+      "status": {
+        "type": "text"
+      },
       "first_name": {
         "type": "text",
         "analyzer": "autocomplete",

@@ -27,7 +27,12 @@
       "id": {
         "type": "text"
       },
-      "task": {
+      "title": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "standard"
+      },
+      "description": {
         "type": "text",
         "analyzer": "autocomplete",
         "search_analyzer": "standard"

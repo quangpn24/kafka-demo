@@ -1,0 +1,29 @@
+{
+  "name": "es-search-task-with-user-info-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "connection.url": "http://elastic:9200",
+    "connection.username": "elastic",
+    "connection.password": "elasticpass",
+    "tasks.max": "1",
+    "topics": "cdc.search.task-with-user-info",
+    "key.ignore": "false",
+    "write.method": "upsert",
+    "read.timeout.ms": 5000,
+    "schema.ignore": "true",
+    "type.name": "_doc",
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "key.converter.schemas.enable": "true",
+    "value.converter.schemas.enable": "false",
+    "behavior.on.null.values": "delete",
+
+    "transforms": "unwrap,key",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.key.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.key.field": "id"
+  }
+}
