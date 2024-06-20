@@ -30,12 +30,12 @@ docker-compose up -d
 
 Use [Debezium source connector](https://docs.confluent.io/kafka-connectors/debezium-mysql-source/current/overview.html)
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @source/debezium/mysql-user-source.json http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @source/for_debezium/mysql-user-source.json http://localhost:8083/connectors
 ```
 
 OR [JDBC source connector](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/overview.html)
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @source/jdbc/mysql-task-source.json http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @source/for_jdbc/mysql-task-source.json http://localhost:8083/connectors
 ```
 2. **Sink connector**
 
@@ -43,12 +43,12 @@ curl -X POST -H "Content-Type: application/json" --data @source/jdbc/mysql-task-
 
 For Debezium source connector
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-user-sink-for-debezium.json http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-user-sink-for-for_debezium.json http://localhost:8083/connectors
 ```
 
 For JDBC source connector
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-task-sink-for-jdbc.json http://localhost:8083/connectors
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-task-sink-for_jdbc.json http://localhost:8083/connectors
 ```
 
 ### Step 4: Initialize Elasticsearch index

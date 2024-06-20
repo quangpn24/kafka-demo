@@ -1,13 +1,15 @@
 {
-  "name": "es-global-search-sink-connector",
+  "name": "es-search-task-with-user-info-connector",
   "config": {
     "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
     "connection.url": "http://elastic:9200",
     "connection.username": "elastic",
     "connection.password": "elasticpass",
     "tasks.max": "1",
-    "topics": "cdc.search.global",
+    "topics": "cdc.search.task-with-user-info",
     "key.ignore": "false",
+    "write.method": "upsert",
+    "read.timeout.ms": 5000,
     "schema.ignore": "true",
     "type.name": "_doc",
     "key.converter": "io.confluent.connect.avro.AvroConverter",

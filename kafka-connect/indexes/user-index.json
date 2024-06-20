@@ -27,15 +27,17 @@
       "id": {
         "type": "text"
       },
-      "username": {
+      "first_name": {
         "type": "text",
         "analyzer": "autocomplete",
         "search_analyzer": "standard"
       },
-      "age": {
-        "type": "integer"
+      "last_name": {
+        "type": "text",
+        "analyzer": "autocomplete",
+        "search_analyzer": "standard"
       },
-      "email": {
+      "gender": {
         "type": "text"
       },
       "created_at": {
