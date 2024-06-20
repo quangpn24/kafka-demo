@@ -25,40 +25,58 @@ cd kafka-learning/kafka-connect
 docker-compose up -d
 ```
 
-### Step 3: Setup connector
-1. **Source connector**
-
-Use [Debezium source connector](https://docs.confluent.io/kafka-connectors/debezium-mysql-source/current/overview.html)
-```bash
-curl -X POST -H "Content-Type: application/json" --data @source/for_debezium/mysql-user-source.json http://localhost:8083/connectors
-```
-
-OR [JDBC source connector](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/overview.html)
-```bash
-curl -X POST -H "Content-Type: application/json" --data @source/for_jdbc/mysql-task-source.json http://localhost:8083/connectors
-```
-2. **Sink connector**
-
- Use [Elasticsearch sink connector](https://docs.confluent.io/kafka-connectors/elasticsearch/current/overview.html)
-
-For Debezium source connector
-```bash
-curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-user-sink-for-for_debezium.json http://localhost:8083/connectors
-```
-
-For JDBC source connector
-```bash
-curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/es-task-sink-for_jdbc.json http://localhost:8083/connectors
-```
-
-### Step 4: Initialize Elasticsearch index
-With Debezium source connector
+### Step 3: Initialize Elasticsearch index
+With Debezium source connector (1 table - index)
 ```bash
 curl -i -X PUT -u "elastic:elasticpass" -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/debezium.cdc.users -d @indexes/user-index.json
+```
+With Debezium source connector (2 table - 1 index)
+```bash
+curl -i -X PUT -u "elastic:elasticpass" -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/cdc.search.task-with-user-info -d @indexes/task-with-user-info.json
 ```
 With JDBC source connector
 ```bash
 curl -i -X PUT -u "elastic:elasticpass" -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:9200/jdbc.test-kafka-connect.tasks -d @indexes/task-index.json
+```
+
+### Step 4: Setup connector
+
+1. **Source connector**
+
+Use [Debezium source connector](https://docs.confluent.io/kafka-connectors/debezium-mysql-source/current/overview.html)
+
+**For user table**
+```bash
+curl -X POST -H "Content-Type: application/json" --data @source/debezium/mysql-user-source.json http://localhost:8083/connectors
+```
+**For task + user table**
+```bash
+curl -X POST -H "Content-Type: application/json" --data @source/debezium/task-with-user-info.json http://localhost:8083/connectors
+```
+
+OR [JDBC source connector](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/overview.html)
+```bash
+curl -X POST -H "Content-Type: application/json" --data @source/jdbc/mysql-task-source.json http://localhost:8083/connectors
+```
+
+2. **Sink connector**
+
+ Use [Elasticsearch sink connector](https://docs.confluent.io/kafka-connectors/elasticsearch/current/overview.html)
+
+For user table (Debezium)
+
+```bash
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/for_debezium/es-user.json http://localhost:8083/connectors
+```
+For user + task table (Debezium)
+
+```bash
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/for_debezium/task-with-user-info.json http://localhost:8083/connectors
+```
+
+For JDBC source connector
+```bash
+curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/for_jdbc/es-task-sink.json http://localhost:8083/connectors
 ```
 
 ### Step 5: Setup password for account `kibana_system`
@@ -75,26 +93,25 @@ After that, you can access Kibana at `http://localhost:5601` with username `your
 First, you need to access your database.
 
 Then, create tables with the following schema:
-```sql 
-//use for Debezium source connector
+```mysql 
 CREATE TABLE users (
    id int AUTO_INCREMENT PRIMARY KEY,
-   username varchar(256),
-   age integer,
-   email varchar(256),
+   first_name varchar(256),
+   last_name varchar(256),
+   gender varchar(256),
    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-   updated_at timestamp DEFAULT CURRENT_TIMESTAMP
-); 
-```
-and 
-```sql
-//use for JDBC source connector
+   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE tasks (
-  id int AUTO_INCREMENT PRIMARY KEY,
-  title varchar(256),
-  status varchar(256),
-  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp DEFAULT CURRENT_TIMESTAMP
+   id int AUTO_INCREMENT PRIMARY KEY,
+   user_id int,
+   title varchar(256),
+   status varchar(256),
+   description varchar(256),
+   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+   updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 ```
 
