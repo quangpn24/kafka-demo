@@ -78,6 +78,12 @@ For JDBC source connector
 ```bash
 curl -X POST -H "Content-Type: application/json" --data @sink/elasticsearch/for_jdbc/es-task-sink.json http://localhost:8083/connectors
 ```
+---
+>**_NOTE:_**  You can check the status of the connector by running the following command:
+>```bash
+>curl -X GET http://localhost:8083/connectors/{connector-name}/status
+>```
+---
 
 ### Step 5: Setup password for account `kibana_system`
 ```bash

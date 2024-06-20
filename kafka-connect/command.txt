@@ -1,0 +1,21 @@
+==========================================================================================================================================================
+# Create connector
+curl -X POST -H "Content-Type: application/json" --data @{your_path} http://localhost:8083/connectors
+
+Ex: curl -X POST -H "Content-Type: application/json" --data @source/jdbc/mysql-task-source http://localhost:8083/connectors
+==========================================================================================================================================================
+# Edit connector
+curl -X PUT -H "Content-Type: application/json" --data @{your_path} http://localhost:8083/connectors/{name_connector}/config
+
+Ex: curl -X PUT -H "Content-Type: application/json" --data @source/config.json http://localhost:8083/connectors/cdc-task-with-user-info-connector/config
+==========================================================================================================================================================
+# Delete connectors
+curl -X DELETE http://localhost:8083/connectors/{name_connector}
+
+Ex: curl -X DELETE http://localhost:8083/connectors/cdc-task-with-user-info-connector
+==========================================================================================================================================================
+# Get status
+curl -s -X GET http://localhost:8083/connectors/{name_connector}/status
+
+Ex: curl -s -X GET http://localhost:8083/connectors/cdc-task-with-user-info-connector/status
+==========================================================================================================================================================
